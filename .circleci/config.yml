@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+  sonarscanner: psl/sonarscanner@0.0.4
+
 jobs:
   build_test:
     docker:
@@ -8,7 +12,8 @@ jobs:
       - run:
           name: Install npm dependencies
           command: |
-            npm install --save	
+            npm install --save
+
   build_docker_image:
     docker:
       - image: circleci/node:12
@@ -23,8 +28,32 @@ jobs:
             echo $DOCKER_PASSWORD | docker login -u kawtar2004 --password-stdin
             docker push kawtar2004/demo_nodejs_circleci:latest
 
+  scan:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Télécharger et installer SonarQube scanner
+          command: |
+            wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            unzip sonar-scanner.zip
+            rm sonar-scanner.zip
+      - run:
+          name: Exécuter SonarScanner
+          command: |
+            export PATH="$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin"
+            sonar-scanner -X \
+            -Dsonar.projectKey=$CIRCLE_BRANCH:$CIRCLE_PROJECT_REPONAME \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.login=$SONAR_TOKEN
+
 workflows:
+  version: 2
   build_test:
     jobs:
       - build_test
       - build_docker_image
+      - scan
