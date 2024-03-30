@@ -19,9 +19,9 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t demo_nodejs_circleci -t kawtarsouhail/demo_nodejs_circleci:latest .
+            docker build -t demo_nodejs_circleci -t kawtar2004/demo_nodejs_circleci:latest .
             echo $DOCKER_PASSWORD | docker login -u kawtar2004 --password-stdin
-            docker push kawtarsouhail/demo_nodejs_circleci:latest
+            docker push kawtar2004/demo_nodejs_circleci:latest
 
 workflows:
   build_test:
