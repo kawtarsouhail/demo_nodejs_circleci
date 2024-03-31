@@ -51,7 +51,7 @@ jobs:
             sonar-scanner \
              -Dsonar.projectKey=demo_nodejs_circleci \
              -Dsonar.sources=. \
-             -Dsonar.host.url=https://sonarqube.com/ \
+             -Dsonar.host.url=http://localhost:9000
              -Dsonar.login=$SONAR_TOKEN
 
 workflows:
