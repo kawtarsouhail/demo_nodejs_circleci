@@ -12,19 +12,8 @@ jobs:
   build_docker_image:
     docker:
       - image: circleci/node:12
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t demo_nodejs_circleci -t kawtar2004/demo_nodejs_circleci:latest .
-            echo $DOCKER_PASSWORD | docker login -u kawtar2004 --password-stdin
-            docker push kawtar2004/demo_nodejs_circleci:latest
 
 workflows:
   build_test:
     jobs:
       - build_test
-      - build_docker_image
