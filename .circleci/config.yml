@@ -50,6 +50,7 @@ jobs:
             sonar-scanner \
               -Dsonar.projectKey=demo_nodejs_circleci \
               -Dsonar.sources=. \
+               sonar.qualitygate.wait=true
               -Dsonar.host.url=http://localhost:9000
 
 workflows:
