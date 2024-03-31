@@ -1,4 +1,3 @@
-
 version: 2.1
 
 orbs:
@@ -61,3 +60,10 @@ workflows:
       - build_test
       - build_docker_image
       - scan
+
+      - notify:
+          name: Notify on failure
+          type: slack
+          channel: '#notifications'
+          message: 'Build failed'
+          fail_only: true
