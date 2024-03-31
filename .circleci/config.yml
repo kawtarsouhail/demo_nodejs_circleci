@@ -81,4 +81,3 @@ workflows:
           filters:
             branches:
               ignore: /.*/
-          when: on_fail
