@@ -1,3 +1,4 @@
+
 version: 2.1
 
 orbs:
@@ -8,9 +9,11 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-      - checkout  
-      - attach_workspace:
-          at: /tmp/workspace  
+      - checkout
+      - run:
+          name: Install npm dependencies
+          command: |
+            npm install --save
 
   build_docker_image:
     docker:
@@ -41,18 +44,15 @@ jobs:
             curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
             unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
             export PATH=$SONAR_SCANNER_HOME/bin:$PATH
-            echo "export PATH=$SONAR_SCANNER_HOME/bin:$PATH" >> $BASH_ENV
-            source $BASH_ENV
             export SONAR_SCANNER_OPTS="-server"
 
       - run:
           name: Exécuter SonarScanner
           command: |
-            sonar-scanner -D \
+           sonar-scanner -h \
              -Dsonar.projectKey=demo_nodejs_circleci \
              -Dsonar.sources=. \
              -Dsonar.host.url=http://localhost:9000
-             -Dsonar.login=$SONAR_TOKEN
 
 workflows:
   version: 2
