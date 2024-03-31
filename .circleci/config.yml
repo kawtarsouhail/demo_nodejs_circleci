@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Télécharger et installer SonarQube scanner
           command: |
-           export SONAR_SCANNER_VERSION=4.7.0.2747
+            export SONAR_SCANNER_VERSION=4.7.0.2747
             export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
             curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
             unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
@@ -46,10 +46,11 @@ jobs:
       - run:
           name: Exécuter SonarScanner
           command: |
-          sonar-scanner \
+            sonar-scanner \
               -Dsonar.projectKey=demo_nodejs_circleci \
               -Dsonar.sources=. \
               -Dsonar.host.url=http://localhost:9000
+
 workflows:
   version: 2
   build_test:
