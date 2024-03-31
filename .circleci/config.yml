@@ -1,8 +1,4 @@
 version: 2.1
-
-orbs:
-  sonarscanner: psl/sonarscanner@0.0.4
-
 jobs:
   build_test:
     docker:
@@ -12,8 +8,7 @@ jobs:
       - run:
           name: Install npm dependencies
           command: |
-            npm install --save
-
+            npm install --save	
   build_docker_image:
     docker:
       - image: circleci/node:12
@@ -28,39 +23,8 @@ jobs:
             echo $DOCKER_PASSWORD | docker login -u kawtar2004 --password-stdin
             docker push kawtar2004/demo_nodejs_circleci:latest
 
-  scan:
-    docker:
-      - image: cimg/openjdk:17.0
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
-
-  notify:
-    docker:
-      - image: cimg/openjdk:17.0
-    steps:
-      - run:
-          name: Notify on failure
-          command: |
-            # Envoyer une notification en cas d'échec du pipeline (exemple: Slack)
-            if [ "$CIRCLE_JOB" != "scan" ]; then
-              echo "Build failed"
-              # Ajouter ici la logique pour envoyer une notification
-            fi
-
 workflows:
-  version: 2
   build_test:
     jobs:
       - build_test
       - build_docker_image
-      - scan
-      - notify:
-          requires:
-            - build_test
-            - build_docker_image
-            - scan
-          filters:
-            branches:
-              ignore: /.*/
