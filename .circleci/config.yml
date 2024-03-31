@@ -50,4 +50,12 @@ jobs:
             $SONAR_SCANNER_HOME/bin/sonar-scanner -X \
               -Dsonar.projectKey=demo_nodejs_circleci \
               -Dsonar.sources=. \
-              -Dsonar
+              -Dsonar.host.url=http://localhost:9000
+
+workflows:
+  version: 2
+  build_test:
+    jobs:
+      - build_test
+      - build_docker_image
+      - scan
