@@ -53,6 +53,19 @@ jobs:
              -Dsonar.sources=. \
              -Dsonar.host.url=http://localhost:9000
 
+  notify:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - run:
+          name: Notify on failure
+          command: |
+            # Envoyer une notification en cas d'échec du pipeline (exemple: Slack)
+            if [ "$CIRCLE_JOB" != "scan" ]; then
+              echo "Build failed"
+              # Ajouter ici la logique pour envoyer une notification
+            fi
+
 workflows:
   version: 2
   build_test:
@@ -60,10 +73,12 @@ workflows:
       - build_test
       - build_docker_image
       - scan
-
       - notify:
-          name: Notify on failure
-          type: slack
-          channel: '#notifications'
-          message: 'Build failed'
-          fail_only: true
+          requires:
+            - build_test
+            - build_docker_image
+            - scan
+          filters:
+            branches:
+              ignore: /.*/
+          when: on_fail
