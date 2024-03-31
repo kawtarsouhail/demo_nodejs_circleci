@@ -48,7 +48,7 @@ jobs:
       - run:
           name: Exécuter SonarScanner
           command: |
-           sonar-scanner -h \
+           sonar-scanner -X \
              -Dsonar.projectKey=demo_nodejs_circleci \
              -Dsonar.sources=. \
              -Dsonar.host.url=http://localhost:9000
