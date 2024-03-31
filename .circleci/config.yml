@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Exécuter SonarScanner
           command: |
-            sonar-scanner \
+            sonar-scanner -e \
               -Dsonar.projectKey=demo_nodejs_circleci \
               -Dsonar.sources=. \
                sonar.qualitygate.wait=true
